@@ -1,7 +1,7 @@
 
 <template>
   <nav id="pagination">
-    <ul class="page-numbers" v-if="$store.state.totalPageCount">
+    <ul class="page-numbers" v-if="totalPageCount">
       <li v-for="(num, index) in this.pageNumbers"
       :key="index"
         v-bind:style="{ width: (100 / pageNumberCount) + '%' }">
@@ -9,7 +9,7 @@
         <span v-else>{{ num }}</span>
       </li>
     </ul>
-    <ul class="page-guides" v-if="this.$store.state.totalPageCount != 1">
+    <ul class="page-guides" v-if="this.totalPageCount != 1">
       <li>
         <nuxt-link v-if="$route.query.page != 1 && $route.query.page" :to="{ path: '/', query: { page: 1 }}">最初</nuxt-link>
         <span v-else>最初</span>
@@ -19,11 +19,11 @@
         <span v-else>&laquo; 前へ</span>
       </li>
       <li>
-        <nuxt-link v-if="this.nextpage != null && $route.query.page != $store.state.totalPageCount" :to="{ path: '/', query: { page: this.nextpage }}">次へ &raquo;</nuxt-link>
+        <nuxt-link v-if="this.nextpage != null && $route.query.page != totalPageCount" :to="{ path: '/', query: { page: this.nextpage }}">次へ &raquo;</nuxt-link>
         <span v-else>次へ &raquo;</span>
       </li>
       <li>
-        <nuxt-link v-if="$route.query.page != $store.state.totalPageCount" :to="{ path: '/', query: { page: $store.state.totalPageCount }}">最後</nuxt-link>
+        <nuxt-link v-if="$route.query.page != totalPageCount" :to="{ path: '/', query: { page: totalPageCount }}">最後</nuxt-link>
         <span v-else>最後</span>
       </li>
     </ul>
@@ -38,7 +38,8 @@ export default {
       nextpage: null,
       currentPage: null,
       pageNumbers: [],
-      pageNumberCount: 0
+      pageNumberCount: 0,
+      totalPageCount:10,
     }
   },
   mounted () {
@@ -63,7 +64,7 @@ export default {
     setPageNumbers () {
       let _currentPage = this.$route.query.page ? this.$route.query.page : 1
       this.currentPage = _currentPage
-      this.setPages(_currentPage, this.$store.state.totalPageCount)
+      this.setPages(_currentPage, this.totalPageCount)
     }
   }
 }
